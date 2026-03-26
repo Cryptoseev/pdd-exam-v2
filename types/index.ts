@@ -21,6 +21,7 @@ export interface Settings {
   shuffleQuestions: boolean;
   soundEnabled: boolean;
   darkMode: boolean;
+  autoVoice: boolean;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -28,7 +29,13 @@ export const DEFAULT_SETTINGS: Settings = {
   shuffleQuestions: true,
   soundEnabled: false,
   darkMode: false,
+  autoVoice: false,
 };
+
+export interface AnswerDetail {
+  questionId: string;
+  selectedAnswer: number;
+}
 
 export interface ExamAttempt {
   id: string;

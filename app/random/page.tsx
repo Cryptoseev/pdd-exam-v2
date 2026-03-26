@@ -3,12 +3,13 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import questionBank from '@/data/questions.json';
 import { useExamSession } from '@/hooks/useExamSession';
+import { useSettings } from '@/hooks/useSettings';
 import { useStatistics } from '@/hooks/useStatistics';
 import { shuffle } from '@/utils/shuffle';
 import { Header } from '@/components/Header';
 import { ProgressBar } from '@/components/ProgressBar';
 import { QuestionCard } from '@/components/QuestionCard';
-import { Question, ExamAttempt } from '@/types';
+import { Question, ExamAttempt, AnswerDetail } from '@/types';
 
 const COUNT_OPTIONS = [
   { count: 10, label: '10 вопросов', sub: 'Быстрая тренировка (~5 мин)' },
@@ -18,6 +19,7 @@ const COUNT_OPTIONS = [
 
 export default function RandomPage() {
   const router = useRouter();
+  const { settings } = useSettings();
   const { addAttempt } = useStatistics();
   const [questions, setQuestions] = useState<Question[]>([]);
   const session = useExamSession(questions);
@@ -73,6 +75,11 @@ export default function RandomPage() {
     };
     addAttempt(attempt);
     sessionStorage.setItem('lastAttempt', JSON.stringify(attempt));
+    const answerDetails: AnswerDetail[] = questions.map((q, i) => ({
+      questionId: q.id,
+      selectedAnswer: session.answers[i] ?? -1,
+    }));
+    sessionStorage.setItem('lastAttemptAnswers', JSON.stringify(answerDetails));
     router.push('/results');
   };
 
@@ -99,6 +106,7 @@ export default function RandomPage() {
           answerState={session.answerStates[session.currentIndex]}
           showImmediately={true}
           onSelectAnswer={idx => session.selectAnswer(idx, true)}
+          autoVoice={settings.autoVoice}
         />
       </div>
 

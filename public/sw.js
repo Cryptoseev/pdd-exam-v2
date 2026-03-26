@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pdd-exam-v1';
+const CACHE_NAME = 'pdd-exam-v2';
 const STATIC_ASSETS = ['/', '/exam', '/tickets', '/random', '/mistakes', '/statistics', '/settings'];
 
 self.addEventListener('install', event => {

@@ -9,7 +9,7 @@ import { shuffle } from '@/utils/shuffle';
 import { Header } from '@/components/Header';
 import { ProgressBar } from '@/components/ProgressBar';
 import { QuestionCard } from '@/components/QuestionCard';
-import { Question, ExamAttempt } from '@/types';
+import { Question, ExamAttempt, AnswerDetail } from '@/types';
 
 const EXAM_QUESTION_COUNT = 20;
 
@@ -43,6 +43,11 @@ export default function ExamPage() {
     };
     addAttempt(attempt);
     sessionStorage.setItem('lastAttempt', JSON.stringify(attempt));
+    const answerDetails: AnswerDetail[] = questions.map((q, i) => ({
+      questionId: q.id,
+      selectedAnswer: session.answers[i] ?? -1,
+    }));
+    sessionStorage.setItem('lastAttemptAnswers', JSON.stringify(answerDetails));
     router.push('/results');
   };
 
@@ -77,6 +82,7 @@ export default function ExamPage() {
           answerState={session.answerStates[session.currentIndex]}
           showImmediately={settings.showAnswerImmediately}
           onSelectAnswer={idx => session.selectAnswer(idx, settings.showAnswerImmediately)}
+          autoVoice={settings.autoVoice}
         />
       </div>
 

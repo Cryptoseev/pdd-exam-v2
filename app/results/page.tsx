@@ -106,12 +106,20 @@ export default function ResultsPage() {
         {/* Action buttons */}
         <div className="flex flex-col gap-3 w-full max-w-sm">
           {wrongCount > 0 && (
-            <button
-              onClick={() => router.push('/mistakes')}
-              className="w-full py-4 rounded-2xl border-2 border-brand-red text-brand-red font-semibold text-sm hover:bg-red-50 dark:hover:bg-red-950 transition-colors cursor-pointer"
-            >
-              Нина Леонидовна, посмотреть ошибки ({wrongCount})
-            </button>
+            <>
+              <button
+                onClick={() => router.push('/review')}
+                className="w-full py-4 rounded-2xl border-2 border-brand-red text-brand-red font-semibold text-sm hover:bg-red-50 dark:hover:bg-red-950 transition-colors cursor-pointer"
+              >
+                📋 Разбор ошибок ({wrongCount})
+              </button>
+              <button
+                onClick={() => router.push('/mistakes')}
+                className="w-full py-4 rounded-2xl border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold text-sm hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer"
+              >
+                🔁 Тренировать ошибки
+              </button>
+            </>
           )}
           <button
             onClick={() => router.back()}

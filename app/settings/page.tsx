@@ -74,6 +74,12 @@ export default function SettingsPage() {
           checked={settings.soundEnabled}
           onChange={v => updateSettings({ soundEnabled: v })}
         />
+        <Toggle
+          label="🔊 Автозвук вопросов"
+          description="Автоматически читать вопрос и варианты ответа вслух при каждом переходе"
+          checked={settings.autoVoice ?? false}
+          onChange={v => updateSettings({ autoVoice: v })}
+        />
 
         <div className="mt-3 bg-blue-50 dark:bg-blue-950/50 rounded-2xl px-4 py-3.5 border border-blue-100 dark:border-blue-900">
           <div className="text-xs font-semibold text-blue-700 dark:text-blue-300 mb-1">

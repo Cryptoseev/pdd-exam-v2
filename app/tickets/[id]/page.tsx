@@ -3,16 +3,18 @@ import { use } from 'react';
 import { useRouter } from 'next/navigation';
 import questionBank from '@/data/questions.json';
 import { useExamSession } from '@/hooks/useExamSession';
+import { useSettings } from '@/hooks/useSettings';
 import { useStatistics } from '@/hooks/useStatistics';
 import { Header } from '@/components/Header';
 import { ProgressBar } from '@/components/ProgressBar';
 import { QuestionCard } from '@/components/QuestionCard';
-import { ExamAttempt } from '@/types';
+import { ExamAttempt, AnswerDetail } from '@/types';
 
 export default function TicketPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const ticketId = Number(id);
   const router = useRouter();
+  const { settings } = useSettings();
   const { addAttempt } = useStatistics();
 
   const ticket = questionBank.tickets.find(t => t.ticketNumber === ticketId);
@@ -44,6 +46,11 @@ export default function TicketPage({ params }: { params: Promise<{ id: string }>
     };
     addAttempt(attempt);
     sessionStorage.setItem('lastAttempt', JSON.stringify(attempt));
+    const answerDetails: AnswerDetail[] = (ticket?.questions ?? []).map((q, i) => ({
+      questionId: q.id,
+      selectedAnswer: session.answers[i] ?? -1,
+    }));
+    sessionStorage.setItem('lastAttemptAnswers', JSON.stringify(answerDetails));
     router.push('/results');
   };
 
@@ -70,6 +77,7 @@ export default function TicketPage({ params }: { params: Promise<{ id: string }>
           answerState={session.answerStates[session.currentIndex]}
           showImmediately={true}
           onSelectAnswer={idx => session.selectAnswer(idx, true)}
+          autoVoice={settings.autoVoice}
         />
       </div>
 
